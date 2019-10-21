@@ -1,6 +1,6 @@
 FROM quay.io/alexcheng1982/apache2-php7:{{phpVersion}}
 
-LABEL maintainer="alexcheng1982@gmail.com"
+LABEL maintainer="marcin.filip@gmail.com"
 LABEL php_version="{{phpVersion}}"
 LABEL magento_version="{{magento2Version}}"
 LABEL description="Magento {{magento2Version}} with PHP {{phpVersion}}"
@@ -35,8 +35,6 @@ RUN apt-get update \
     && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini
 
 RUN chsh -s /bin/bash www-data
-
-{{{magento2Installation}}}
 
 RUN cd $INSTALL_DIR \
     && find . -type d -exec chmod 770 {} \; \
