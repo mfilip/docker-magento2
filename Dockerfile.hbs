@@ -36,6 +36,8 @@ RUN apt-get update \
 
 RUN chsh -s /bin/bash www-data
 
+{{{magento2Installation}}}
+
 RUN cd $INSTALL_DIR \
     && find . -type d -exec chmod 770 {} \; \
     && find . -type f -exec chmod 660 {} \; \
