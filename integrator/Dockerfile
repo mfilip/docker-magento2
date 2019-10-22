@@ -13,7 +13,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 COPY ./auth.json $COMPOSER_HOME
 
-RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip libsodium" \
+RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip" \
     && apt-get update \
     && apt-get install -y $requirements \
     && rm -rf /var/lib/apt/lists/* \
@@ -32,7 +32,10 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
     && yes '' | pecl install mcrypt-1.0.1 \
-    && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini
+    && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
+    && pecl install -f libsodium \
+    && echo "extension = sodium.so" > /etc/php/7.2/mods-available/sodium.ini \
+    && phpenmod sodium
 
 RUN chsh -s /bin/bash www-data
 
