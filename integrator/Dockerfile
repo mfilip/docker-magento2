@@ -34,7 +34,7 @@ RUN apt-get update \
     && yes '' | pecl install mcrypt-1.0.1 \
     && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
     && pecl install -f libsodium \
-    && echo "extension = sodium.so" > /etc/php/7.2/mods-available/sodium.ini \
+    && echo "extension = sodium.so" > /usr/local/etc/php/conf.d/sodium.ini \
     && phpenmod sodium
 
 RUN chsh -s /bin/bash www-data
