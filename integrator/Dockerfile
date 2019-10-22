@@ -8,6 +8,7 @@ LABEL description="Magento 2.3.2 with PHP 7.2.12"
 ENV MAGENTO_VERSION 2.3.2
 ENV INSTALL_DIR /var/www/html
 ENV COMPOSER_HOME /var/www/.composer/
+ENV DOWNLOAD_DIR /var/www/download/
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
@@ -29,13 +30,19 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg-turbo8-dev" \
     && apt-get purge --auto-remove -y $requirementsToRemove
 
+# Install sodium latest
+RUN curl https://download.libsodium.org/libsodium/releases/LATEST.tar.gz --output "${DOWNLOAD_DIR}LATEST.tar.gz"
+RUN tar xvzf "${DOWNLOAD_DIR}LATEST.tar.gz"
+RUN cd libsodium-stable && \
+    ./configure && \
+    make && make check && \
+    make install
+RUN docker-php-ext-install sodium
+
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
     && yes '' | pecl install mcrypt-1.0.1 \
-    && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini \
-    && pecl install -f libsodium \
-    && echo "extension = sodium.so" > /usr/local/etc/php/conf.d/sodium.ini \
-    && phpenmod sodium
+    && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini
 
 RUN chsh -s /bin/bash www-data
 
