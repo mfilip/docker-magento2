@@ -36,7 +36,7 @@ RUN cd libsodium-stable && \
     ./configure && \
     make && make check && \
     make install
-RUN cd..
+RUN cd ..
 
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
