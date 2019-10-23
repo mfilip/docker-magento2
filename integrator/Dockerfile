@@ -8,13 +8,12 @@ LABEL description="Magento 2.3.2 with PHP 7.2.12"
 ENV MAGENTO_VERSION 2.3.2
 ENV INSTALL_DIR /var/www/html
 ENV COMPOSER_HOME /var/www/.composer/
-ENV DOWNLOAD_DIR /var/www/download/
 
 RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 COPY ./auth.json $COMPOSER_HOME
 
-RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip" \
+RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip wget" \
     && apt-get update \
     && apt-get install -y $requirements \
     && rm -rf /var/lib/apt/lists/* \
@@ -31,9 +30,8 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # Install sodium latest
-RUN target="LATEST.tar.gz"
-RUN curl https://download.libsodium.org/libsodium/releases/LATEST.tar.gz --output "$DOWNLOAD_DIR$target"
-RUN tar xvzf "$DOWNLOAD_DIR$target"
+RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+RUN tar xvzf LATEST.tar.gz
 RUN cd libsodium-stable && \
     ./configure && \
     make && make check && \
