@@ -36,7 +36,6 @@ RUN cd libsodium-stable && \
     ./configure && \
     make && make check && \
     make install
-RUN docker-php-ext-install sodium
 
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
@@ -46,6 +45,7 @@ RUN apt-get update \
 RUN chsh -s /bin/bash www-data
 
 RUN chown -R www-data:www-data /var/www
+RUN rm -rf ./var/composer_home ./composer.lock ./vendor
 RUN su www-data -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
 
 RUN cd $INSTALL_DIR \
