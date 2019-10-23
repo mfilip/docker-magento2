@@ -31,8 +31,9 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # Install sodium latest
-RUN curl https://download.libsodium.org/libsodium/releases/LATEST.tar.gz --output "${DOWNLOAD_DIR}LATEST.tar.gz"
-RUN tar xvzf "${DOWNLOAD_DIR}LATEST.tar.gz"
+RUN target="LATEST.tar.gz"
+RUN curl https://download.libsodium.org/libsodium/releases/LATEST.tar.gz --output "$DOWNLOAD_DIR$target"
+RUN tar xvzf "$DOWNLOAD_DIR$target"
 RUN cd libsodium-stable && \
     ./configure && \
     make && make check && \
