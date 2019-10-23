@@ -44,8 +44,8 @@ RUN apt-get update \
     && echo 'extension=mcrypt.so' > /usr/local/etc/php/conf.d/mcrypt.ini
 
 RUN chsh -s /bin/bash www-data
-
 RUN chown -R www-data:www-data /var/www
+RUN rm -r $INSTALL_DIR/*
 RUN su www-data -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
 
 RUN cd $INSTALL_DIR \
