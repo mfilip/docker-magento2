@@ -30,13 +30,8 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # Install sodium latest
-RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
-RUN tar xvzf LATEST.tar.gz
-RUN cd libsodium-stable && \
-    ./configure && \
-    make && make check && \
-    make install
-RUN cd ..
+RUN pecl install libsodium-2.0.22 \
+    && docker-php-ext-enable libsodium
 
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
@@ -45,7 +40,6 @@ RUN apt-get update \
 
 RUN chsh -s /bin/bash www-data
 RUN chown -R www-data:www-data /var/www
-RUN rm -r $INSTALL_DIR/*
 RUN su www-data -c "composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition $INSTALL_DIR $MAGENTO_VERSION"
 
 RUN cd $INSTALL_DIR \
