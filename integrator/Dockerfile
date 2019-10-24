@@ -1,4 +1,4 @@
-FROM quay.io/alexcheng1982/apache2-php7:7.2.12
+FROM php:7.2-apache
 
 LABEL maintainer="alexcheng1982@gmail.com"
 LABEL php_version="7.2.12"
