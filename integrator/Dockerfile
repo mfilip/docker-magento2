@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.4-rc-apache
 
 LABEL maintainer="alexcheng1982@gmail.com"
 LABEL php_version="7.2.12"
@@ -13,11 +13,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 COPY ./auth.json $COMPOSER_HOME
 
-RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip wget" \
-    && apt-get update \
-    && apt-get install -y $requirements \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-install pdo_mysql \
+RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd \
     && docker-php-ext-install mbstring \
@@ -25,20 +21,18 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && docker-php-ext-install intl \
     && docker-php-ext-install xsl \
     && docker-php-ext-install soap \
-    && docker-php-ext-install bcmath \
-    && requirementsToRemove="libpng12-dev libmcrypt-dev libcurl3-dev libpng12-dev libfreetype6-dev libjpeg-turbo8-dev" \
-    && apt-get purge --auto-remove -y $requirementsToRemove
+    && docker-php-ext-install bcmath
 
 # Install sodium latest
-RUN apt-get purge libsodium1.*
-RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
-RUN tar xvzf LATEST.tar.gz
-RUN cd libsodium-stable && \
-    ./configure && \
-    make && make check && \
-    make install
-RUN docker-php-ext-disable
-RUN cd ..
+#RUN apt-get purge libsodium1.*
+#RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
+#RUN tar xvzf LATEST.tar.gz
+#RUN cd libsodium-stable && \
+#    ./configure && \
+#    make && make check && \
+#    make install
+#RUN docker-php-ext-disable
+#RUN cd ..
 
 RUN apt-get update \
     && apt-get install -y libmcrypt-dev \
