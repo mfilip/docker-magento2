@@ -30,7 +30,7 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # Install sodium latest
-RUN apt-get purge libsodium1.* # get rid of distro packages
+RUN apt-get purge libsodium1.*
 RUN wget https://download.libsodium.org/libsodium/releases/LATEST.tar.gz
 RUN tar xvzf LATEST.tar.gz
 RUN cd libsodium-stable && \
