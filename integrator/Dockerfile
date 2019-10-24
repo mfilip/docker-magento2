@@ -13,7 +13,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
     && mv composer.phar /usr/local/bin/composer
 COPY ./auth.json $COMPOSER_HOME
 
-RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip libsodium libsodium-dev" \
+RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype6 libjpeg-turbo8 libjpeg-turbo8-dev libpng12-dev libfreetype6-dev libicu-dev libxslt1-dev unzip" \
     && apt-get update \
     && apt-get install -y $requirements \
     && rm -rf /var/lib/apt/lists/* \
@@ -30,6 +30,7 @@ RUN requirements="libpng12-dev libmcrypt-dev libmcrypt4 libcurl3-dev libfreetype
     && apt-get purge --auto-remove -y $requirementsToRemove
 
 # Install sodium latest
+RUN apt install libsodium libsodium-dev
 RUN pecl install libsodium-2.0.22 \
     && docker-php-ext-enable libsodium
 
