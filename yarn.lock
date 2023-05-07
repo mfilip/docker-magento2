@@ -16,7 +16,7 @@ amdefine@>=0.0.4:
 
 async@^1.4.0:
   version "1.5.2"
-  resolved "https://registry.npmjs.org/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
+  resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
 bluebird@^3.5.1:
   version "3.5.1"
